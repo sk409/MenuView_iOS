@@ -2,135 +2,102 @@ import UIKit
 
 class MenuItemView: UIView {
     
-    let iconImageView = UIImageView()
     let titleLabel = UILabel()
-    var action: (() -> Void)?
+    var onTouchUpInside: (() -> Void)?
     var iconImage: UIImage? {
         didSet {
             iconImageView.image = iconImage
-            titleLabelLeadingConstraintToHeaderViewLeading?.isActive = iconImage == nil
-            titleLabelLeadingConstraintToIconImageViewTrailing?.isActive = iconImage != nil
+            iconImageView.isHidden = iconImage == nil
         }
     }
-    var title: String? {
-        didSet {
-            titleLabel.text = title
-        }
-    }
-    var itemInsets = UIEdgeInsets(
-        top: 0,
-        left: 4,
-        bottom: 0,
-        right: 0
+    
+    fileprivate let verticalStackView = UIStackView()
+    fileprivate let horizontalStackView = UIStackView()
+    
+    private let iconImageView = UIImageView()
+    
+    init(
+        title: String? = nil,
+        itemInsets: UIEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8),
+        iconImage: UIImage? = nil,
+        height: CGFloat = 44,
+        onTouchUpInside: (() -> Void)? = nil
     ) {
-        didSet {
-            // TODO
-            setNeedsLayout()
-        }
-    }
-    
-    fileprivate let headerView = UIView()
-    fileprivate var headerViewBottomConstraint: NSLayoutConstraint?
-    
-    private var titleLabelLeadingConstraintToHeaderViewLeading: NSLayoutConstraint?
-    private var titleLabelLeadingConstraintToIconImageViewTrailing: NSLayoutConstraint?
-    
-    init(title: String, iconImage: UIImage? = nil) {
         super.init(frame: .zero)
-        setupViews(title: title, iconImage: iconImage)
+        setupViews(
+            title: title,
+            itemInsets: itemInsets,
+            iconImage: iconImage,
+            height: height,
+            onTouchUpInside: onTouchUpInside
+        )
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupViews(title: String? = nil, iconImage: UIImage? = nil) {
+    private func setupViews(
+        title: String?,
+        itemInsets: UIEdgeInsets,
+        iconImage: UIImage?,
+        height: CGFloat,
+        onTouchUpInside: (() -> Void)?
+    ) {
         self.iconImage = iconImage
-        self.title = title
+        self.onTouchUpInside = onTouchUpInside
         addGestureRecognizer(UITapGestureRecognizer(
             target: self,
             action: #selector(handleTapGesture)
         ))
         
-        addSubview(headerView)
-        headerView.addSubview(iconImageView)
-        headerView.addSubview(titleLabel)
+        addSubview(verticalStackView)
+        verticalStackView.addArrangedSubview(horizontalStackView)
+        horizontalStackView.addArrangedSubview(iconImageView)
+        horizontalStackView.addArrangedSubview(titleLabel)
         
-        headerView.translatesAutoresizingMaskIntoConstraints = false
-        headerViewBottomConstraint = headerView.bottomAnchor.constraint(
-            equalTo: safeAreaLayoutGuide.bottomAnchor
-        )
+        verticalStackView.axis = .vertical
+        verticalStackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            headerView.leadingAnchor.constraint(
-                equalTo: safeAreaLayoutGuide.leadingAnchor
-            ),
-            headerView.trailingAnchor.constraint(
-                equalTo: safeAreaLayoutGuide.trailingAnchor
-            ),
-            headerView.topAnchor.constraint(
-                equalTo: safeAreaLayoutGuide.topAnchor
-            ),
-            headerViewBottomConstraint!,
-            headerView.heightAnchor.constraint(
-                greaterThanOrEqualToConstant: 44
-            )
-        ])
-        
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabelLeadingConstraintToHeaderViewLeading = titleLabel.leadingAnchor.constraint(
-            equalTo: headerView.leadingAnchor,
-            constant: itemInsets.left
-        )
-        titleLabelLeadingConstraintToIconImageViewTrailing = titleLabel.leadingAnchor.constraint(
-            equalTo: iconImageView.trailingAnchor,
-            constant: UIScreen.main.bounds.width * 0.025
-        )
-        let titleLabelLeadingConstraint = iconImage == nil
-            ? titleLabelLeadingConstraintToHeaderViewLeading
-            : titleLabelLeadingConstraintToIconImageViewTrailing
-        let titleLabelTrailingConstraint = titleLabel.trailingAnchor.constraint(
-            equalTo: headerView.trailingAnchor,
-            constant: -itemInsets.right
-        )
-        titleLabelTrailingConstraint.priority = UILayoutPriority.defaultLow
-        NSLayoutConstraint.activate([
-            titleLabelLeadingConstraint!,
-            titleLabelTrailingConstraint,
-            titleLabel.topAnchor.constraint(
-                equalTo: headerView.topAnchor,
-                constant: itemInsets.top
-            ),
-            titleLabel.bottomAnchor.constraint(
-                equalTo: headerView.bottomAnchor,
-                constant: -itemInsets.bottom
-            )
-        ])
-        
-        let iconHeight = titleLabel.sizeThatFits(
-            CGSize(width: CGFloat.infinity, height: .infinity)
-        ).height
-        iconImageView.contentMode = .scaleAspectFit
-        iconImageView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            iconImageView.leadingAnchor.constraint(
+            verticalStackView.leadingAnchor.constraint(
                 equalTo: safeAreaLayoutGuide.leadingAnchor,
                 constant: itemInsets.left
             ),
-            iconImageView.centerYAnchor.constraint(
-                equalTo: safeAreaLayoutGuide.centerYAnchor
+            verticalStackView.trailingAnchor.constraint(
+                equalTo: safeAreaLayoutGuide.trailingAnchor,
+                constant: -itemInsets.right
             ),
+            verticalStackView.topAnchor.constraint(
+                equalTo: safeAreaLayoutGuide.topAnchor,
+                constant: itemInsets.top
+            ),
+            verticalStackView.bottomAnchor.constraint(
+                equalTo: safeAreaLayoutGuide.bottomAnchor,
+                constant: -itemInsets.bottom
+            ),
+        ])
+        
+        horizontalStackView.spacing = 8
+        horizontalStackView.alignment = .center
+        NSLayoutConstraint.activate([
+            horizontalStackView.heightAnchor.constraint(equalToConstant: height)
+        ])
+        
+        iconImageView.contentMode = .scaleAspectFit
+        iconImageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        NSLayoutConstraint.activate([
             iconImageView.widthAnchor.constraint(
                 equalTo: iconImageView.heightAnchor
             ),
-            iconImageView.heightAnchor.constraint(
-                equalToConstant: iconHeight
-            )
+            iconImageView.heightAnchor.constraint(lessThanOrEqualToConstant: 32)
         ])
+        
+        titleLabel.text = title
     }
     
     @objc
     private func handleTapGesture() {
-        action?()
+        onTouchUpInside?()
     }
 }
 
@@ -148,12 +115,13 @@ class MenuGroupView: MenuItemView {
     
     fileprivate let menuItemStackView = UIStackView()
     
-    override init(title: String, iconImage: UIImage? = nil) {
-        super.init(title: title, iconImage: iconImage)
-    }
-    
-    init(title: String, menuItemViews: [MenuItemView]) {
-        super.init(title: title)
+    init(
+        title: String? = nil,
+        itemInsets: UIEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8),
+        iconImage: UIImage? = nil,
+        menuItemViews: [MenuItemView]? = nil
+    ) {
+        super.init(title: title, itemInsets: itemInsets, iconImage: iconImage)
         setupViews(menuItemViews: menuItemViews)
     }
     
@@ -162,30 +130,13 @@ class MenuGroupView: MenuItemView {
     }
     
     private func setupViews(
-        menuItemViews: [MenuItemView]
+        menuItemViews: [MenuItemView]?
     ) {
-        headerViewBottomConstraint?.isActive = false
         self.menuItemViews = menuItemViews
-        
-        addSubview(menuItemStackView)
-        
-        menuItemStackView.distribution = .fill
+
+        verticalStackView.addArrangedSubview(menuItemStackView)
+
         menuItemStackView.axis = .vertical
-        menuItemStackView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            menuItemStackView.leadingAnchor.constraint(
-                equalTo: safeAreaLayoutGuide.leadingAnchor
-            ),
-            menuItemStackView.trailingAnchor.constraint(
-                equalTo: safeAreaLayoutGuide.trailingAnchor
-            ),
-            menuItemStackView.topAnchor.constraint(
-                equalTo: headerView.bottomAnchor
-            ),
-            menuItemStackView.bottomAnchor.constraint(
-                equalTo: safeAreaLayoutGuide.bottomAnchor
-            ),
-        ])
     }
     
     private func addMenuItemViews() {
@@ -230,9 +181,7 @@ class MenuCollapsableGroupView: MenuGroupView {
         menuItemViews?.forEach { $0.isHidden = !open }
         state = open ? .opened : .closed
         
-        headerView.addSubview(collapserButton)
-        
-        titleLabel.trailingAnchor.constraint(equalTo: collapserButton.leadingAnchor).isActive = true
+        horizontalStackView.addArrangedSubview(collapserButton)
         
         let collapserButtonRotationAngle = open
             ? CGFloat.pi/180 * 90
@@ -240,28 +189,19 @@ class MenuCollapsableGroupView: MenuGroupView {
         collapserButton.transform = CGAffineTransform(
             rotationAngle: collapserButtonRotationAngle
         )
-        collapserButton.setImage(UIImage(named: "chevron-right"), for: .normal)
+        collapserButton.setImage(UIImage(
+            named: "chevron-right"),
+            for: .normal
+        )
+        collapserButton.setContentHuggingPriority(
+            .defaultHigh,
+            for: .horizontal
+        )
         collapserButton.addTarget(
             self,
             action: #selector(handleCollapserButtonTouchUpInsideEvent),
             for: .touchUpInside
         )
-        collapserButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            collapserButton.centerYAnchor.constraint(
-                equalTo: titleLabel.centerYAnchor
-            ),
-            collapserButton.trailingAnchor.constraint(
-                equalTo: headerView.trailingAnchor,
-                constant: -itemInsets.right
-            ),
-            collapserButton.widthAnchor.constraint(
-                equalTo: collapserButton.heightAnchor
-            ),
-            collapserButton.heightAnchor.constraint(
-                greaterThanOrEqualToConstant: 44
-            )
-        ])
     }
     
     @objc

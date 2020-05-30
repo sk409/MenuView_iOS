@@ -14,8 +14,6 @@
 		534CA8672480FC910041C189 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 534CA8652480FC910041C189 /* LaunchScreen.storyboard */; };
 		534CA86F2480FDA80041C189 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534CA86E2480FDA80041C189 /* MenuView.swift */; };
 		534CA8712480FDDB0041C189 /* MenuGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534CA8702480FDDB0041C189 /* MenuGroupView.swift */; };
-		534CA8732480FDE50041C189 /* MenuItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534CA8722480FDE50041C189 /* MenuItemView.swift */; };
-		537DED992482296F0086ABFD /* MenuCollapsableGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 537DED982482296F0086ABFD /* MenuCollapsableGroupView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,8 +26,6 @@
 		534CA8682480FC910041C189 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		534CA86E2480FDA80041C189 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		534CA8702480FDDB0041C189 /* MenuGroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuGroupView.swift; sourceTree = "<group>"; };
-		534CA8722480FDE50041C189 /* MenuItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemView.swift; sourceTree = "<group>"; };
-		537DED982482296F0086ABFD /* MenuCollapsableGroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCollapsableGroupView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,8 +66,6 @@
 				534CA8682480FC910041C189 /* Info.plist */,
 				534CA86E2480FDA80041C189 /* MenuView.swift */,
 				534CA8702480FDDB0041C189 /* MenuGroupView.swift */,
-				537DED982482296F0086ABFD /* MenuCollapsableGroupView.swift */,
-				534CA8722480FDE50041C189 /* MenuItemView.swift */,
 			);
 			path = MenuView;
 			sourceTree = "<group>";
@@ -149,10 +143,8 @@
 				534CA85F2480FC8E0041C189 /* ViewController.swift in Sources */,
 				534CA86F2480FDA80041C189 /* MenuView.swift in Sources */,
 				534CA85B2480FC8E0041C189 /* AppDelegate.swift in Sources */,
-				534CA8732480FDE50041C189 /* MenuItemView.swift in Sources */,
 				534CA85D2480FC8E0041C189 /* SceneDelegate.swift in Sources */,
 				534CA8712480FDDB0041C189 /* MenuGroupView.swift in Sources */,
-				537DED992482296F0086ABFD /* MenuCollapsableGroupView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,5 +1,28 @@
 import UIKit
 
+protocol MenuViewDelegate {
+    func menuView(_ menuView: MenuView, dividerFor: MenuItemView) -> UIView
+}
+
+struct DefaultMenuViewDelegate: MenuViewDelegate {
+    
+    func menuView(_ menuView: MenuView, dividerFor: MenuItemView) -> UIView {
+        let defaultDividerView = UIView()
+        let value: CGFloat = 0.8
+        defaultDividerView.backgroundColor = UIColor(
+            displayP3Red: value,
+            green: value,
+            blue: value,
+            alpha: 1
+        )
+        defaultDividerView.translatesAutoresizingMaskIntoConstraints = false
+        defaultDividerView.heightAnchor.constraint(
+            equalToConstant: 1
+        ).isActive = true
+        return defaultDividerView
+    }
+}
+
 class MenuView: UIScrollView {
     
     enum State {
@@ -9,36 +32,12 @@ class MenuView: UIScrollView {
         case closed
     }
     
-    private static func makeDividerView() -> UIView {
-        let defaultDividerView = UIView()
-        defaultDividerView.backgroundColor = UIColor(
-            displayP3Red: 0.91764705882,
-            green: 0.91764705882,
-            blue: 0.91764705882,
-            alpha: 1
-        )
-        defaultDividerView.translatesAutoresizingMaskIntoConstraints = false
-        defaultDividerView.heightAnchor.constraint(
-            equalToConstant: 1
-        ).isActive = true
-        return defaultDividerView
-    }
-    
-    var animationDuration: TimeInterval = 0.25
-    var animationDelay: TimeInterval = 0
-    var animationOptions: AnimationOptions = [.curveEaseOut]
-    var dividerViewFactory = makeDividerView
-    var widthMultiplier: CGFloat = 0.65 {
-        didSet {
-            widthConstraint?.constant = widthMultiplier
-        }
-    }
+    var menuViewDelegate: MenuViewDelegate = DefaultMenuViewDelegate()
     
     private(set) var state = State.closed
     
-    private let menuItemsStackView = UIStackView()
     private var trailingConstraint: NSLayoutConstraint?
-    private var widthConstraint: NSLayoutConstraint?
+    private let menuItemStackView = UIStackView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -53,64 +52,47 @@ class MenuView: UIScrollView {
         setupViews()
     }
     
-    func append(_ menuGroupView: MenuGroupView) {
-        append(menuGroupView, withDefaultDivider: true)
+    func append(_ menuItemView: MenuItemView) {
+        append(menuItemView, withDivider: true)
     }
     
-    func append(_ menuGroupView: MenuGroupView, withDefaultDivider: Bool) {
-        if withDefaultDivider {
-            menuItemsStackView.addArrangedSubview(dividerViewFactory())
+    func append(_ menuItemView: MenuItemView, withDivider: Bool) {
+        if withDivider {
+            let dividerView = menuViewDelegate.menuView(self, dividerFor: menuItemView)
+            menuItemStackView.addArrangedSubview(dividerView)
         }
-        menuItemsStackView.addArrangedSubview(menuGroupView)
-    }
-    
-    func open() {
-        state = .opening
-        trailingConstraint?.constant = bounds.width
-        UIView.animate(
-            withDuration: animationDuration,
-            delay: animationDelay,
-            options: animationOptions,
-            animations: {
-                guard let superview = self.superview else {
-                    return
-                }
-                superview.layoutIfNeeded()
-        }) { finished in
-            self.state = finished ? .opened : .closed
-        }
-    }
-    
-    func close() {
-        state = .closing
-        trailingConstraint?.constant = 0
-        UIView.animate(
-            withDuration: animationDuration,
-            delay: animationDelay,
-            options: animationOptions,
-            animations: {
-                guard let superview = self.superview else {
-                    return
-                }
-                superview.layoutIfNeeded()
-        }) { finished in
-            self.state = finished ? .closed : .opened
-        }
+        menuItemStackView.addArrangedSubview(menuItemView)
     }
     
     func toggle() -> Bool {
-        switch state {
-        case .opening:
+        guard state == .opened || state == .closed else {
             return false
-        case .opened:
-            close()
-            return true
-        case .closing:
-            return false
-        case .closed:
-            open()
-            return true
         }
+        state = state == .opened ? .closing : .opening
+        trailingConstraint?.constant = state == .opening
+            ? bounds.width
+            : 0
+        UIView.animate(
+            withDuration: 0.25,
+            delay: 0,
+            options: .curveEaseOut,
+            animations: {
+                guard let superview = self.superview else {
+                    return
+                }
+                superview.layoutIfNeeded()
+        }) { finished in
+            if finished {
+                self.state = self.state == .opening
+                ? .opened
+                : .closed
+            } else {
+                self.state = self.state == .opening
+                ? .closed
+                : .opened
+            }
+        }
+        return true
     }
     
     private func setupViews() {
@@ -125,21 +107,26 @@ class MenuView: UIScrollView {
             bottomAnchor.constraint(equalTo: superview.safeAreaLayoutGuide.bottomAnchor),
             widthAnchor.constraint(
                 equalTo: superview.safeAreaLayoutGuide.widthAnchor,
-                multiplier: widthMultiplier
+                multiplier: 0.65
             ),
         ])
         
-        addSubview(menuItemsStackView)
-        menuItemsStackView.axis = .vertical
-        menuItemsStackView.alignment = .fill
-        menuItemsStackView.distribution = .fill
-        menuItemsStackView.translatesAutoresizingMaskIntoConstraints = false
-        menuItemsStackView.removeConstraints(menuItemsStackView.constraints)
+        addSubview(menuItemStackView)
+        menuItemStackView.axis = .vertical
+        menuItemStackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            menuItemsStackView.leadingAnchor.constraint(equalTo: contentLayoutGuide.leadingAnchor),
-            menuItemsStackView.topAnchor.constraint(equalTo: contentLayoutGuide.topAnchor),
-            menuItemsStackView.bottomAnchor.constraint(equalTo: contentLayoutGuide.bottomAnchor),
-            menuItemsStackView.widthAnchor.constraint(equalTo: frameLayoutGuide.widthAnchor),
+            menuItemStackView.leadingAnchor.constraint(
+                equalTo: contentLayoutGuide.leadingAnchor
+            ),
+            menuItemStackView.topAnchor.constraint(
+                equalTo: contentLayoutGuide.topAnchor
+            ),
+            menuItemStackView.bottomAnchor.constraint(
+                equalTo: contentLayoutGuide.bottomAnchor
+            ),
+            menuItemStackView.widthAnchor.constraint(
+                equalTo: frameLayoutGuide.widthAnchor
+            ),
         ])
     }
 }
