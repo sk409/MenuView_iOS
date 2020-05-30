@@ -7,19 +7,19 @@ protocol MenuViewDelegate {
 struct DefaultMenuViewDelegate: MenuViewDelegate {
     
     func menuView(_ menuView: MenuView, dividerFor: MenuItemView) -> UIView {
-        let defaultDividerView = UIView()
+        let dividerView = UIView()
         let value: CGFloat = 0.8
-        defaultDividerView.backgroundColor = UIColor(
+        dividerView.backgroundColor = UIColor(
             displayP3Red: value,
             green: value,
             blue: value,
             alpha: 1
         )
-        defaultDividerView.translatesAutoresizingMaskIntoConstraints = false
-        defaultDividerView.heightAnchor.constraint(
+        dividerView.translatesAutoresizingMaskIntoConstraints = false
+        dividerView.heightAnchor.constraint(
             equalToConstant: 1
         ).isActive = true
-        return defaultDividerView
+        return dividerView
     }
 }
 
