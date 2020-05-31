@@ -1,28 +1,5 @@
 import UIKit
 
-protocol MenuViewDelegate {
-    func menuView(_ menuView: MenuView, dividerFor: MenuItemView) -> UIView
-}
-
-struct DefaultMenuViewDelegate: MenuViewDelegate {
-    
-    func menuView(_ menuView: MenuView, dividerFor: MenuItemView) -> UIView {
-        let dividerView = UIView()
-        let value: CGFloat = 0.8
-        dividerView.backgroundColor = UIColor(
-            displayP3Red: value,
-            green: value,
-            blue: value,
-            alpha: 1
-        )
-        dividerView.translatesAutoresizingMaskIntoConstraints = false
-        dividerView.heightAnchor.constraint(
-            equalToConstant: 1
-        ).isActive = true
-        return dividerView
-    }
-}
-
 class MenuView: UIScrollView {
     
     enum State {
@@ -36,7 +13,9 @@ class MenuView: UIScrollView {
     
     private(set) var state = State.closed
     
+    private var leadingConstraint: NSLayoutConstraint?
     private var trailingConstraint: NSLayoutConstraint?
+    private let touchGuardView = UIView()
     private let menuItemStackView = UIStackView()
     
     override init(frame: CGRect) {
@@ -48,7 +27,6 @@ class MenuView: UIScrollView {
     }
     
     func initialize() {
-        backgroundColor = .white
         setupViews()
     }
     
@@ -69,14 +47,20 @@ class MenuView: UIScrollView {
             return false
         }
         state = state == .opened ? .closing : .opening
-        trailingConstraint?.constant = state == .opening
-            ? bounds.width
-            : 0
+        let isOpening = self.state == .opening
+        if isOpening {
+            trailingConstraint?.isActive.toggle()
+            leadingConstraint?.isActive.toggle()
+        } else {
+            leadingConstraint?.isActive.toggle()
+            trailingConstraint?.isActive.toggle()
+        }
         UIView.animate(
             withDuration: 0.25,
             delay: 0,
             options: .curveEaseOut,
             animations: {
+                self.touchGuardView.alpha = isOpening ? 0.8 : 0
                 guard let superview = self.superview else {
                     return
                 }
@@ -96,17 +80,54 @@ class MenuView: UIScrollView {
     }
     
     private func setupViews() {
-        guard let superview = superview else {
+        backgroundColor = .white
+        
+        guard let window = UIApplication.shared.windows.first else {
             return
         }
+        
+        window.addSubview(touchGuardView)
+        window.addSubview(self)
+        
+        touchGuardView.backgroundColor = UIColor.black
+        touchGuardView.alpha = 0
+        touchGuardView.addGestureRecognizer(UITapGestureRecognizer(
+            target: self,
+            action: #selector(handleTouchGuardViewTapEvent))
+        )
+        touchGuardView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            touchGuardView.leadingAnchor.constraint(
+                equalTo: window.safeAreaLayoutGuide.leadingAnchor
+            ),
+            touchGuardView.trailingAnchor.constraint(
+                equalTo: window.safeAreaLayoutGuide.trailingAnchor
+            ),
+            touchGuardView.topAnchor.constraint(
+                equalTo: window.safeAreaLayoutGuide.topAnchor
+            ),
+            touchGuardView.bottomAnchor.constraint(
+                equalTo: window.safeAreaLayoutGuide.bottomAnchor
+            ),
+        ])
+        
         translatesAutoresizingMaskIntoConstraints = false
-        trailingConstraint = trailingAnchor.constraint(equalTo: superview.leadingAnchor)
+        leadingConstraint = leadingAnchor.constraint(
+            equalTo: window.leadingAnchor
+        )
+        trailingConstraint = trailingAnchor.constraint(
+            equalTo: window.leadingAnchor
+        )
         NSLayoutConstraint.activate([
             trailingConstraint!,
-            topAnchor.constraint(equalTo: superview.safeAreaLayoutGuide.topAnchor),
-            bottomAnchor.constraint(equalTo: superview.safeAreaLayoutGuide.bottomAnchor),
+            topAnchor.constraint(
+                equalTo: window.safeAreaLayoutGuide.topAnchor
+            ),
+            bottomAnchor.constraint(
+                equalTo: window.safeAreaLayoutGuide.bottomAnchor
+            ),
             widthAnchor.constraint(
-                equalTo: superview.safeAreaLayoutGuide.widthAnchor,
+                equalTo: window.safeAreaLayoutGuide.widthAnchor,
                 multiplier: 0.65
             ),
         ])
@@ -128,5 +149,10 @@ class MenuView: UIScrollView {
                 equalTo: frameLayoutGuide.widthAnchor
             ),
         ])
+    }
+    
+    @objc
+    private func handleTouchGuardViewTapEvent() {
+        _ = toggle()
     }
 }

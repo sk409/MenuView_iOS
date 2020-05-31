@@ -3,7 +3,7 @@ import UIKit
 class MenuItemView: UIView {
     
     let titleLabel = UILabel()
-    var onTouchUpInside: (() -> Void)?
+    var onTap: (() -> Void)?
     var iconImage: UIImage? {
         didSet {
             iconImageView.image = iconImage
@@ -17,11 +17,11 @@ class MenuItemView: UIView {
     private let iconImageView = UIImageView()
     
     init(
-        title: String? = nil,
+        title: String,
         itemInsets: UIEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8),
         iconImage: UIImage? = nil,
         height: CGFloat = 44,
-        onTouchUpInside: (() -> Void)? = nil
+        onTap: (() -> Void)? = nil
     ) {
         super.init(frame: .zero)
         setupViews(
@@ -29,7 +29,7 @@ class MenuItemView: UIView {
             itemInsets: itemInsets,
             iconImage: iconImage,
             height: height,
-            onTouchUpInside: onTouchUpInside
+            onTap: onTap
         )
     }
     
@@ -38,14 +38,14 @@ class MenuItemView: UIView {
     }
     
     private func setupViews(
-        title: String?,
+        title: String,
         itemInsets: UIEdgeInsets,
         iconImage: UIImage?,
         height: CGFloat,
-        onTouchUpInside: (() -> Void)?
+        onTap: (() -> Void)?
     ) {
         self.iconImage = iconImage
-        self.onTouchUpInside = onTouchUpInside
+        self.onTap = onTap
         addGestureRecognizer(UITapGestureRecognizer(
             target: self,
             action: #selector(handleTapGesture)
@@ -97,7 +97,7 @@ class MenuItemView: UIView {
     
     @objc
     private func handleTapGesture() {
-        onTouchUpInside?()
+        onTap?()
     }
 }
 
@@ -116,7 +116,7 @@ class MenuGroupView: MenuItemView {
     fileprivate let menuItemStackView = UIStackView()
     
     init(
-        title: String? = nil,
+        title: String,
         itemInsets: UIEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8),
         iconImage: UIImage? = nil,
         menuItemViews: [MenuItemView]? = nil
@@ -161,8 +161,6 @@ class MenuCollapsableGroupView: MenuGroupView {
         case closing
         case closed
     }
-    
-    var collapseAnimationDuration = 0.25
     
     private(set) var state = State.closed
     
@@ -210,7 +208,7 @@ class MenuCollapsableGroupView: MenuGroupView {
             return
         }
         state = state == .opened ? .closing : .opening
-        UIView.animate(withDuration: collapseAnimationDuration, animations: {
+        UIView.animate(withDuration: 0.25, animations: {
             let rotationAngle = self.state == .opening
                 ? CGFloat.pi/180 * 90
                 : 0

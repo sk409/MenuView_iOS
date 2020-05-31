@@ -2,26 +2,49 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    private let button = UIButton()
     private let menuView: MenuView = MenuView()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        setup()
+        setupViews()
     }
     
-    private func setup() {
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        setupMenuView()
+    }
+    
+    
+    private func setupViews() {
         view.backgroundColor = .green
-        setupSubviews()
-    }
-    
-    
-    private func setupSubviews() {
-        view.addSubview(menuView)
+        
+        let button = UIButton()
+        
         view.addSubview(button)
         
-        let menuItemHeight: CGFloat = 44
+        button.setTitle("Open", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.addTarget(self, action: #selector(toggle), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            button.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
+        ])
         
+        let dummy = UIView()
+        view.addSubview(dummy)
+        dummy.backgroundColor = .orange
+        dummy.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            dummy.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            dummy.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            dummy.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.6),
+            dummy.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.6)
+        ])
+    }
+    
+    private func setupMenuView() {
+        let menuItemHeight: CGFloat = 44
         let menu_1 = MenuItemView(
             title: "MenuItem_1",
             iconImage: UIImage(named: "book"),
@@ -83,9 +106,9 @@ class ViewController: UIViewController {
                 menu_1_5,
             ]
         )
-//        let group_2 = MenuGroupView(title: "MenuItem_2")
-//        let group_3 = MenuGroupView(title: "MenuItem_3")
-//        let group_4 = MenuGroupView(title: "MenuItem_4")
+        //        let group_2 = MenuGroupView(title: "MenuItem_2")
+        //        let group_3 = MenuGroupView(title: "MenuItem_3")
+        //        let group_4 = MenuGroupView(title: "MenuItem_4")
         let menu_5_1 = MenuItemView(
             title: "MenuGroup_5_1",
             iconImage: UIImage(named: "book"),
@@ -165,22 +188,12 @@ class ViewController: UIViewController {
         menuView.append(group_1)
         menuView.append(group_5)
         menuView.append(group_6)
-        
-        button.setTitle("Toggle", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.addTarget(self, action: #selector(toggle), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            button.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -16)
-        ])
     }
     
     @objc
     private func toggle() {
         _ = menuView.toggle()
     }
-
-
+    
 }
 
