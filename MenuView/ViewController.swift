@@ -2,7 +2,49 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    private class MenuSection {
+        let title: String?
+        let iconImage: UIImage?
+        let menuItems: [MenuItem]
+        let collapsable: Bool
+        let insets: UIEdgeInsets
+        
+        init(
+            title: String? = nil,
+            iconImage: UIImage? = nil,
+            menuItems: [MenuItem] = [],
+            collapsable: Bool = false,
+            insets: UIEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        ) {
+            self.title = title
+            self.iconImage = iconImage
+            self.menuItems = menuItems
+            self.collapsable = collapsable
+            self.insets = insets
+        }
+    }
+    
+    private class MenuItem {
+        let title: String
+        let iconImage: UIImage?
+        let insets: UIEdgeInsets
+        let onTap: (() -> Void)?
+        
+        init(
+            title: String,
+            iconImage: UIImage? = nil,
+            insets: UIEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8),
+            onTap: (() -> Void)? = nil
+        ) {
+            self.title = title
+            self.iconImage = iconImage
+            self.insets = insets
+            self.onTap = onTap
+        }
+    }
+    
     private let menuView: MenuView = MenuView()
+    private var menuSections = [MenuSection]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,150 +86,31 @@ class ViewController: UIViewController {
     }
     
     private func setupMenuView() {
-        let menuItemHeight: CGFloat = 44
-        let menu_1 = MenuItemView(
-            title: "MenuItem_1",
-            iconImage: UIImage(named: "book"),
-            height: menuItemHeight
-        )
-        let menu_2 = MenuItemView(
-            title: "MenuItem_2",
-            iconImage: UIImage(named: "book"),
-            height: menuItemHeight
-        )
-        let menu_3 = MenuItemView(
-            title: "MenuItem_3",
-            iconImage: UIImage(named: "book"),
-            height: menuItemHeight
-        )
-        
-        let menu_1_1 = MenuItemView(
-            title: "MenuGroup_1_1",
-            iconImage: UIImage(named: "book"),
-            height: menuItemHeight
-        ) {
-            print("menu_1_1")
+        let sections = [1, 1, 12, 6, 24]
+        for (i, section) in sections.enumerated() {
+            var menuItems = [MenuItem]()
+            for j in 0..<section {
+                let title = "Section\(i)_\(j)"
+                menuItems.append(
+                    MenuItem(
+                        title: title,
+                        iconImage: UIImage(named: "book")
+                    ) {
+                        print(title)
+                    }
+                )
+            }
+            let section = MenuSection(
+                title: "Section\(i)",
+                iconImage: i.isMultiple(of: 2) ? UIImage(named: "android") : nil,
+                menuItems: menuItems,
+                collapsable: i.isMultiple(of: 2)
+            )
+            menuSections.append(section)
         }
-        let menu_1_2 = MenuItemView(
-            title: "MenuGroup_1_2",
-            iconImage: UIImage(named: "book"),
-            height: menuItemHeight
-        ) {
-            print("menu_1_2")
-        }
-        let menu_1_3 = MenuItemView(
-            title: "MenuGroup_1_3",
-            iconImage: UIImage(named: "book"),
-            height: menuItemHeight
-        ) {
-            print("menu_1_3")
-        }
-        let menu_1_4 = MenuItemView(
-            title: "MenuGroup_1_4",
-            iconImage: UIImage(named: "book"),
-            height: menuItemHeight
-        ) {
-            print("menu_1_4")
-        }
-        let menu_1_5 = MenuItemView(
-            title: "MenuGroup_1_5",
-            iconImage: UIImage(named: "book"),
-            height: menuItemHeight
-        ) {
-            print("menu_1_5")
-        }
-        let group_1 = MenuGroupView(
-            title: "MenuGroup_1",
-            menuItemViews: [
-                menu_1_1,
-                menu_1_2,
-                menu_1_3,
-                menu_1_4,
-                menu_1_5,
-            ]
-        )
-        //        let group_2 = MenuGroupView(title: "MenuItem_2")
-        //        let group_3 = MenuGroupView(title: "MenuItem_3")
-        //        let group_4 = MenuGroupView(title: "MenuItem_4")
-        let menu_5_1 = MenuItemView(
-            title: "MenuGroup_5_1",
-            iconImage: UIImage(named: "book"),
-            height: menuItemHeight
-        ) {
-            print("menu_5_1")
-        }
-        let menu_5_2 = MenuItemView(
-            title: "MenuGroup_5_2",
-            iconImage: UIImage(named: "book"),
-            height: menuItemHeight
-        ) {
-            print("menu_5_2")
-        }
-        let menu_5_3 = MenuItemView(
-            title: "MenuGroup_5_3",
-            iconImage: UIImage(named: "book"),
-            height: menuItemHeight
-        ) {
-            print("menu_5_3")
-        }
-        let menu_5_4 = MenuItemView(
-            title: "MenuGroup_5_4",
-            iconImage: UIImage(named: "book"),
-            height: menuItemHeight
-        ) {
-            print("menu_5_4")
-        }
-        let menu_5_5 = MenuItemView(
-            title: "MenuGroup_5_5",
-            iconImage: UIImage(named: "book"),
-            height: menuItemHeight
-        ) {
-            print("menu_5_5")
-        }
-        let group_5 = MenuCollapsableGroupView(
-            title: "MenuItem_5",
-            menuItemViews: [
-                menu_5_1,
-                menu_5_2,
-                menu_5_3,
-                menu_5_4,
-                menu_5_5,
-            ],
-            open: false
-        )
-        let group_6 = MenuCollapsableGroupView(
-            title: "MenuGroup_6",
-            menuItemViews: [
-                MenuItemView(
-                    title: "MenuGroup_6_1",
-                    height: menuItemHeight
-                ),
-                MenuItemView(
-                    title: "MenuGroup_6_2",
-                    height: menuItemHeight
-                ),
-                MenuItemView(
-                    title: "MenuGroup_6_3",
-                    height: menuItemHeight
-                ),
-                MenuItemView(
-                    title: "MenuGroup_6_4",
-                    height: menuItemHeight
-                ),
-                MenuItemView(
-                    title: "MenuGroup_6_5",
-                    height: menuItemHeight
-                ),
-            ],
-            open: true
-        )
+        menuView.menuViewDataSource = self
+        menuView.menuViewDelegate = self
         menuView.initialize()
-        menuView.append(menu_1, withDivider: false)
-        menuView.append(menu_2, withDivider: false)
-        menuView.append(menu_3, withDivider: false)
-        menuView.append(group_1)
-        menuView.append(group_5)
-        menuView.append(group_6)
     }
     
     @objc
@@ -197,3 +120,50 @@ class ViewController: UIViewController {
     
 }
 
+extension ViewController: MenuViewDelegate {
+    
+    func menuView(
+        _ menuView: MenuView,
+        headerForSectionAt section: Int
+    ) -> MenuSectionHeaderView? {
+        let menuSection = menuSections[section]
+        guard menuSection.title != nil || menuSection.iconImage != nil else {
+            return nil
+        }
+        let headerView = MenuSectionHeaderView(
+            title: menuSection.title,
+            iconImage: menuSection.iconImage,
+            collapsable: menuSection.collapsable,
+            insets: menuSection.insets
+        )
+        headerView.titleLabel.font = .systemFont(ofSize: 18)
+        headerView.titleLabel.textColor = UIColor(white: 0, alpha: 0.6)
+        return headerView
+    }
+    
+    func menuView(_ menuView: MenuView, didSelectItemAt indexPath: IndexPath) {
+        let menuItem = menuSections[indexPath.section].menuItems[indexPath.item]
+        menuItem.onTap?()
+    }
+}
+
+extension ViewController: MenuViewDataSource {
+    
+    func numberOfSections(in menuView: MenuView) -> Int {
+        return menuSections.count
+    }
+    
+    func menuView(_ menuView: MenuView, numberOfItemsInSection section: Int) -> Int {
+        return menuSections[section].menuItems.count
+    }
+    
+    func menuView(_ menuView: MenuView, itemAt indexPath: IndexPath) -> MenuItemView {
+        let menuItem = menuSections[indexPath.section].menuItems[indexPath.item]
+        let menuItemView = MenuItemView(
+            title: menuItem.title,
+            iconImage: menuItem.iconImage,
+            insets: menuItem.insets
+        )
+        return menuItemView
+    }
+}

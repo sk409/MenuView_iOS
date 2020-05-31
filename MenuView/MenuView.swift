@@ -9,6 +9,7 @@ class MenuView: UIScrollView {
         case closed
     }
     
+    var menuViewDataSource: MenuViewDataSource?
     var menuViewDelegate: MenuViewDelegate = DefaultMenuViewDelegate()
     
     private(set) var state = State.closed
@@ -16,7 +17,7 @@ class MenuView: UIScrollView {
     private var leadingConstraint: NSLayoutConstraint?
     private var trailingConstraint: NSLayoutConstraint?
     private let touchGuardView = UIView()
-    private let menuItemStackView = UIStackView()
+    private let menuItemsStackView = UIStackView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -28,18 +29,7 @@ class MenuView: UIScrollView {
     
     func initialize() {
         setupViews()
-    }
-    
-    func append(_ menuItemView: MenuItemView) {
-        append(menuItemView, withDivider: true)
-    }
-    
-    func append(_ menuItemView: MenuItemView, withDivider: Bool) {
-        if withDivider {
-            let dividerView = menuViewDelegate.menuView(self, dividerFor: menuItemView)
-            menuItemStackView.addArrangedSubview(dividerView)
-        }
-        menuItemStackView.addArrangedSubview(menuItemView)
+        loadData()
     }
     
     func toggle() -> Bool {
@@ -132,27 +122,81 @@ class MenuView: UIScrollView {
             ),
         ])
         
-        addSubview(menuItemStackView)
-        menuItemStackView.axis = .vertical
-        menuItemStackView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(menuItemsStackView)
+        menuItemsStackView.axis = .vertical
+        menuItemsStackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            menuItemStackView.leadingAnchor.constraint(
+            menuItemsStackView.leadingAnchor.constraint(
                 equalTo: contentLayoutGuide.leadingAnchor
             ),
-            menuItemStackView.topAnchor.constraint(
+            menuItemsStackView.topAnchor.constraint(
                 equalTo: contentLayoutGuide.topAnchor
             ),
-            menuItemStackView.bottomAnchor.constraint(
+            menuItemsStackView.bottomAnchor.constraint(
                 equalTo: contentLayoutGuide.bottomAnchor
             ),
-            menuItemStackView.widthAnchor.constraint(
+            menuItemsStackView.widthAnchor.constraint(
                 equalTo: frameLayoutGuide.widthAnchor
             ),
         ])
     }
     
+    private func loadData() {
+        guard let menuViewDataSource = menuViewDataSource else {
+            return
+        }
+        let numberOfSections = menuViewDataSource.numberOfSections(in: self)
+        for section in 0..<numberOfSections {
+            if let dividerForSection = menuViewDelegate.menuView(
+                self,
+                dividerForSectionAt: section
+            ) {
+                menuItemsStackView.addArrangedSubview(dividerForSection)
+            }
+            let menuSectionView = MenuSectionView()
+            let menuSectionHeaderView = menuViewDelegate.menuView(
+                self,
+                headerForSectionAt: section
+            )
+            menuSectionView.initialize(
+                headerView: menuSectionHeaderView
+            )
+            menuItemsStackView.addArrangedSubview(menuSectionView)
+            let numberOfItems = menuViewDataSource.menuView(
+                self, numberOfItemsInSection: section
+            )
+            for item in 0..<numberOfItems {
+                if let dividerForItem = menuViewDelegate.menuView(
+                    self,
+                    dividerForItemAt: IndexPath(item: item, section: section)
+                ) {
+                    menuSectionView.append(divider: dividerForItem)
+                }
+                let menuItemIndePath = IndexPath(item: item, section: section)
+                let menuItemView = menuViewDataSource.menuView(
+                    self,
+                    itemAt: menuItemIndePath
+                )
+                menuItemView.indexPath = menuItemIndePath
+                menuItemView.addGestureRecognizer(UITapGestureRecognizer(
+                    target: self,
+                    action: #selector(handleMenuItemViewTapEvent))
+                )
+                menuSectionView.append(menuItem: menuItemView)
+            }
+        }
+    }
+    
     @objc
     private func handleTouchGuardViewTapEvent() {
         _ = toggle()
+    }
+    
+    @objc
+    private func handleMenuItemViewTapEvent(sender: UITapGestureRecognizer) {
+        guard let indexPath = (sender.view as? MenuItemView)?.indexPath else {
+            return
+        }
+        menuViewDelegate.menuView(self, didSelectItemAt: indexPath)
     }
 }
