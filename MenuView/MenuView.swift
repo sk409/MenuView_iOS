@@ -10,7 +10,7 @@ class MenuView: UIScrollView {
     }
     
     var menuViewDataSource: MenuViewDataSource?
-    var menuViewDelegate: MenuViewDelegate = DefaultMenuViewDelegate()
+    var menuViewDelegate: MenuViewDelegate?
     
     private(set) var state = State.closed
     
@@ -145,6 +145,9 @@ class MenuView: UIScrollView {
         guard let menuViewDataSource = menuViewDataSource else {
             return
         }
+        guard let menuViewDelegate = menuViewDelegate else {
+            return
+        }
         let numberOfSections = menuViewDataSource.numberOfSections(in: self)
         for section in 0..<numberOfSections {
             if let dividerForSection = menuViewDelegate.menuView(
@@ -194,6 +197,9 @@ class MenuView: UIScrollView {
     
     @objc
     private func handleMenuItemViewTapEvent(sender: UITapGestureRecognizer) {
+        guard let menuViewDelegate = menuViewDelegate else {
+            return
+        }
         guard let indexPath = (sender.view as? MenuItemView)?.indexPath else {
             return
         }

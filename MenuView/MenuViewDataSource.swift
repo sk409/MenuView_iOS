@@ -11,12 +11,4 @@ extension MenuViewDataSource {
     func numberOfSections(in menuView: MenuView) -> Int {
         return 1
     }
-    
-    func menuView(_ menuView: MenuView, titleForHeaderInSection section: Int) -> String? {
-        return nil
-    }
-    
-    func menuView(_ menuView: MenuView, iconForHeaderInSection section: Int) -> UIImage? {
-        return nil
-    }
 }

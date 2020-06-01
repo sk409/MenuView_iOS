@@ -54,13 +54,4 @@ extension MenuViewDelegate {
     ) -> UIView? {
         return nil
     }
-    
-    func menuView(
-        _ menuView: MenuView,
-        didSelectItemAt indexPath: IndexPath
-    ) {
-    }
-}
-
-struct DefaultMenuViewDelegate: MenuViewDelegate {
 }
