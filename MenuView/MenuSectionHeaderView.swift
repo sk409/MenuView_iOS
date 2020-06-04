@@ -1,31 +1,32 @@
 import UIKit
 
-class MenuSectionHeaderView: UIView {
+open class MenuSectionHeaderView: UIView {
     
-    let titleLabel = UILabel()
-    let iconImageView = UIImageView()
-    let collapserButton = UIButton()
+    public let titleLabel = UILabel()
+    public let iconImageView = UIImageView()
+    public let collapserButton = UIButton()
     
-    let contentsStackView = UIStackView()
+    var collapsable: Bool
     
-    init(
+    private let contentsStackView = UIStackView()
+    
+    public init(
         title: String?,
         iconImage: UIImage?,
         collapsable: Bool,
-        height: CGFloat = 44,
         insets: UIEdgeInsets = .zero
     ) {
+        self.collapsable = collapsable
         super.init(frame: .zero)
         setupViews(
             title: title,
             iconImage: iconImage,
             collapsable: collapsable,
-            height: height,
             insets: insets
         )
     }
     
-    required init(coder: NSCoder) {
+    required public init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -33,7 +34,6 @@ class MenuSectionHeaderView: UIView {
         title: String?,
         iconImage: UIImage?,
         collapsable: Bool,
-        height: CGFloat,
         insets: UIEdgeInsets
     ) {
         addSubview(contentsStackView)
@@ -60,8 +60,7 @@ class MenuSectionHeaderView: UIView {
             contentsStackView.bottomAnchor.constraint(
                 equalTo: safeAreaLayoutGuide.bottomAnchor,
                 constant: -insets.bottom
-            ),
-            contentsStackView.heightAnchor.constraint(equalToConstant: height)
+            )
         ])
         
         iconImageView.image = iconImage
@@ -79,8 +78,13 @@ class MenuSectionHeaderView: UIView {
         titleLabel.text = title
         titleLabel.isHidden = title == nil
         
-        collapserButton.setImage(UIImage(named: "chevron-right"), for: .normal)
+        collapserButton.setImage(UIImage(named: "menu"), for: .normal)
         collapserButton.isHidden = !collapsable
         collapserButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        NSLayoutConstraint.activate([
+            collapserButton.widthAnchor.constraint(
+                equalTo: collapserButton.heightAnchor
+            )
+        ])
     }
 }

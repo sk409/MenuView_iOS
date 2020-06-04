@@ -18,6 +18,8 @@
 		537DED9D24836B950086ABFD /* MenuViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 537DED9C24836B950086ABFD /* MenuViewDataSource.swift */; };
 		537DED9F24837C260086ABFD /* MenuSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 537DED9E24837C260086ABFD /* MenuSectionView.swift */; };
 		537DEDA32483A3FD0086ABFD /* MenuSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 537DEDA22483A3FD0086ABFD /* MenuSectionHeaderView.swift */; };
+		538A43562487FD5F0004E527 /* MenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538A43552487FD5F0004E527 /* MenuItem.swift */; };
+		538A43582487FD790004E527 /* MenuSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538A43572487FD790004E527 /* MenuSection.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +36,8 @@
 		537DED9C24836B950086ABFD /* MenuViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewDataSource.swift; sourceTree = "<group>"; };
 		537DED9E24837C260086ABFD /* MenuSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuSectionView.swift; sourceTree = "<group>"; };
 		537DEDA22483A3FD0086ABFD /* MenuSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuSectionHeaderView.swift; sourceTree = "<group>"; };
+		538A43552487FD5F0004E527 /* MenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItem.swift; sourceTree = "<group>"; };
+		538A43572487FD790004E527 /* MenuSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuSection.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,7 +77,9 @@
 				534CA8652480FC910041C189 /* LaunchScreen.storyboard */,
 				534CA8682480FC910041C189 /* Info.plist */,
 				534CA86E2480FDA80041C189 /* MenuView.swift */,
+				538A43552487FD5F0004E527 /* MenuItem.swift */,
 				534CA8702480FDDB0041C189 /* MenuItemView.swift */,
+				538A43572487FD790004E527 /* MenuSection.swift */,
 				537DED9E24837C260086ABFD /* MenuSectionView.swift */,
 				537DEDA22483A3FD0086ABFD /* MenuSectionHeaderView.swift */,
 				537DED9A248366F90086ABFD /* MenuViewDelegate.swift */,
@@ -160,7 +166,9 @@
 				534CA85D2480FC8E0041C189 /* SceneDelegate.swift in Sources */,
 				537DED9F24837C260086ABFD /* MenuSectionView.swift in Sources */,
 				537DED9B248366F90086ABFD /* MenuViewDelegate.swift in Sources */,
+				538A43582487FD790004E527 /* MenuSection.swift in Sources */,
 				534CA8712480FDDB0041C189 /* MenuItemView.swift in Sources */,
+				538A43562487FD5F0004E527 /* MenuItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
