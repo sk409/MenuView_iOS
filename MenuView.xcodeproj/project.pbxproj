@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		534CA85B2480FC8E0041C189 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534CA85A2480FC8E0041C189 /* AppDelegate.swift */; };
-		534CA85D2480FC8E0041C189 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534CA85C2480FC8E0041C189 /* SceneDelegate.swift */; };
 		534CA85F2480FC8E0041C189 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534CA85E2480FC8E0041C189 /* ViewController.swift */; };
 		534CA8642480FC910041C189 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 534CA8632480FC910041C189 /* Assets.xcassets */; };
 		534CA8672480FC910041C189 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 534CA8652480FC910041C189 /* LaunchScreen.storyboard */; };
@@ -26,7 +25,6 @@
 /* Begin PBXFileReference section */
 		534CA8572480FC8E0041C189 /* MenuView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MenuView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		534CA85A2480FC8E0041C189 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		534CA85C2480FC8E0041C189 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		534CA85E2480FC8E0041C189 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		534CA8632480FC910041C189 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		534CA8662480FC910041C189 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -73,7 +71,6 @@
 			isa = PBXGroup;
 			children = (
 				534CA85A2480FC8E0041C189 /* AppDelegate.swift */,
-				534CA85C2480FC8E0041C189 /* SceneDelegate.swift */,
 				534CA85E2480FC8E0041C189 /* ViewController.swift */,
 				534CA8632480FC910041C189 /* Assets.xcassets */,
 				534CA8652480FC910041C189 /* LaunchScreen.storyboard */,
@@ -166,7 +163,6 @@
 				534CA86F2480FDA80041C189 /* MenuView.swift in Sources */,
 				534CA85B2480FC8E0041C189 /* AppDelegate.swift in Sources */,
 				537DED9D24836B950086ABFD /* MenuViewDataSource.swift in Sources */,
-				534CA85D2480FC8E0041C189 /* SceneDelegate.swift in Sources */,
 				537DED9F24837C260086ABFD /* MenuSectionView.swift in Sources */,
 				537DED9B248366F90086ABFD /* MenuViewDelegate.swift in Sources */,
 				538A43582487FD790004E527 /* MenuSection.swift in Sources */,
@@ -240,7 +236,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -294,7 +290,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
