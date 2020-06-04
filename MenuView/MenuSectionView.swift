@@ -2,17 +2,17 @@ import UIKit
 
 class MenuSectionView: UIStackView {
     
-    enum State {
-        case opening
-        case opened
-        case closing
-        case closed
-    }
+//    enum State {
+//        case opening
+//        case opened
+//        case closing
+//        case closed
+//    }
     
     let iconImageView = UIImageView()
     let titleLabel = UILabel()
     
-    private(set) var state = State.closed
+//    private(set) var state = State.closed
     
     private var itemsStackViewHeightConstraint: NSLayoutConstraint?
     private var menuItemViewPositionConstraintsWhenCollapsing = [NSLayoutConstraint]()
@@ -21,7 +21,7 @@ class MenuSectionView: UIStackView {
     private var menuItemViewHeightConstraintsWhenOpening = [NSLayoutConstraint]()
     private var headerView: MenuSectionHeaderView?
     private let headerViewContainerView = UIView()
-    private let itemsStackView = UIStackView()
+    private let itemsStackView = MenuSectionItemsStackView()
     
     init() {
         super.init(frame: .zero)
@@ -169,13 +169,13 @@ class MenuSectionView: UIStackView {
     
     @objc
     private func handleCollapserButtonTouchUpInsideEvent() {
-        guard state == .opened || state == .closed else {
+        guard itemsStackView.state == .opened || itemsStackView.state == .closed else {
             return
         }
         guard let itemsStackViewHeightConstraint = itemsStackViewHeightConstraint else {
             return
         }
-        if state == .opened {
+        if itemsStackView.state == .opened {
             menuItemViewPositionConstraintsWhenOpening.forEach{$0.isActive = false}
             menuItemViewPositionConstraintsWhenCollapsing.forEach{$0.isActive = true}
             menuItemViewHeightConstraintsWhenOpening.forEach{$0.isActive = false}
@@ -188,16 +188,16 @@ class MenuSectionView: UIStackView {
             menuItemViewPositionConstraintsWhenCollapsing.forEach{$0.isActive = false}
             menuItemViewPositionConstraintsWhenOpening.forEach{$0.isActive = true}
         }
-        let collapserButtonImage = state == .opened ? UIImage(named: "menu") : UIImage(named: "menu-open")
+        let collapserButtonImage = itemsStackView.state == .opened ? UIImage(named: "menu") : UIImage(named: "menu-open")
         headerView?.collapserButton.setImage(collapserButtonImage, for: .normal)
-        state = state == .opened ? .closing : .opening
+        itemsStackView.state = itemsStackView.state == .opened ? .closing : .opening
         UIView.animate(withDuration: 0.25, animations: {
             self.superview?.superview?.layoutIfNeeded()
         }) { finished in
             if finished {
-                self.state = self.state == .opening ? .opened : .closed
+                self.itemsStackView.state = self.itemsStackView.state == .opening ? .opened : .closed
             } else {
-                self.state = self.state == .opening ? .closed : .opened
+                self.itemsStackView.state = self.itemsStackView.state == .opening ? .closed : .opened
             }
         }
     }

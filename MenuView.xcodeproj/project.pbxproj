@@ -20,6 +20,7 @@
 		537DEDA32483A3FD0086ABFD /* MenuSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 537DEDA22483A3FD0086ABFD /* MenuSectionHeaderView.swift */; };
 		538A43562487FD5F0004E527 /* MenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538A43552487FD5F0004E527 /* MenuItem.swift */; };
 		538A43582487FD790004E527 /* MenuSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538A43572487FD790004E527 /* MenuSection.swift */; };
+		538A435C2488F1C90004E527 /* MenuSectionItemsStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538A435B2488F1C90004E527 /* MenuSectionItemsStackView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		537DEDA22483A3FD0086ABFD /* MenuSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuSectionHeaderView.swift; sourceTree = "<group>"; };
 		538A43552487FD5F0004E527 /* MenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItem.swift; sourceTree = "<group>"; };
 		538A43572487FD790004E527 /* MenuSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuSection.swift; sourceTree = "<group>"; };
+		538A435B2488F1C90004E527 /* MenuSectionItemsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuSectionItemsStackView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +84,7 @@
 				538A43572487FD790004E527 /* MenuSection.swift */,
 				537DED9E24837C260086ABFD /* MenuSectionView.swift */,
 				537DEDA22483A3FD0086ABFD /* MenuSectionHeaderView.swift */,
+				538A435B2488F1C90004E527 /* MenuSectionItemsStackView.swift */,
 				537DED9A248366F90086ABFD /* MenuViewDelegate.swift */,
 				537DED9C24836B950086ABFD /* MenuViewDataSource.swift */,
 			);
@@ -169,6 +172,7 @@
 				538A43582487FD790004E527 /* MenuSection.swift in Sources */,
 				534CA8712480FDDB0041C189 /* MenuItemView.swift in Sources */,
 				538A43562487FD5F0004E527 /* MenuItem.swift in Sources */,
+				538A435C2488F1C90004E527 /* MenuSectionItemsStackView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
