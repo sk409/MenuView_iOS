@@ -39,16 +39,6 @@ public protocol MenuViewDataSource: NSObjectProtocol {
         _ menuView: MenuView,
         heightForItemAt indexPath: IndexPath
     ) -> CGFloat
-    
-    func menuView(
-        _ menuView: MenuView,
-        insetsForHeaderInSection section: Int
-    ) -> UIEdgeInsets
-    
-    func menuView(
-        _ menuView: MenuView,
-        insetsForItemAt indexPath: IndexPath
-    ) -> UIEdgeInsets
 }
 
 extension MenuViewDataSource {
@@ -91,27 +81,13 @@ extension MenuViewDataSource {
         _ menuView: MenuView,
         heightForHeaderInSection section: Int
     ) -> CGFloat {
-        return 44
+        return 52
     }
     
     func menuView(
         _ menuView: MenuView,
         heightForItemAt indexPath: IndexPath
     ) -> CGFloat {
-        return 44
-    }
-    
-    func menuView(
-        _ menuView: MenuView,
-        insetsForHeaderInSection section: Int
-    ) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 8, left: 4, bottom: 8, right: 4)
-    }
-    
-    func menuView(
-        _ menuView: MenuView,
-        insetsForItemAt indexPath: IndexPath
-    ) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 8, left: 4, bottom: 8, right: 4)
+        return 52
     }
 }

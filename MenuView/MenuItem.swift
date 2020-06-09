@@ -9,7 +9,7 @@ public struct MenuItem {
     public init(
         title: String,
         iconImage: UIImage? = nil,
-        insets: UIEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8),
+        insets: UIEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4),
         onTap: (() -> Void)? = nil
     ) {
         self.title = title

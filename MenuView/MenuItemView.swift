@@ -11,12 +11,14 @@ open class MenuItemView: UIView {
     
     public init (
         title: String,
-        iconImage: UIImage?
+        iconImage: UIImage?,
+        insets: UIEdgeInsets = UIEdgeInsets(top: 0, left: 4, bottom: 4, right: 4)
     ) {
         super.init(frame: .zero)
         setupViews(
             title: title,
-            iconImage: iconImage
+            iconImage: iconImage,
+            insets: insets
         )
     }
     
@@ -26,28 +28,32 @@ open class MenuItemView: UIView {
     
     private func setupViews(
         title: String,
-        iconImage: UIImage?
+        iconImage: UIImage?,
+        insets: UIEdgeInsets
     ) {
         
         addSubview(contentsStackView)
         contentsStackView.addArrangedSubview(iconImageView)
         contentsStackView.addArrangedSubview(titleLabel)
 
-        contentsStackView.alignment = .center
         contentsStackView.spacing = 8
         contentsStackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             contentsStackView.leadingAnchor.constraint(
-                equalTo: safeAreaLayoutGuide.leadingAnchor
+                equalTo: safeAreaLayoutGuide.leadingAnchor,
+                constant: insets.left
             ),
             contentsStackView.trailingAnchor.constraint(
-                equalTo: safeAreaLayoutGuide.trailingAnchor
+                equalTo: safeAreaLayoutGuide.trailingAnchor,
+                constant: -insets.right
             ),
             contentsStackView.topAnchor.constraint(
-                equalTo: safeAreaLayoutGuide.topAnchor
+                equalTo: safeAreaLayoutGuide.topAnchor,
+                constant: insets.top
             ),
             contentsStackView.bottomAnchor.constraint(
-                equalTo: safeAreaLayoutGuide.bottomAnchor
+                equalTo: safeAreaLayoutGuide.bottomAnchor,
+                constant: -insets.bottom
             )
         ])
 
@@ -57,7 +63,7 @@ open class MenuItemView: UIView {
         iconImageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
 
         titleLabel.text = title
-    
+
     }
 
 }

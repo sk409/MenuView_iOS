@@ -1,6 +1,6 @@
 import UIKit
 
-class MenuSectionItemsStackView: UIStackView {
+class MenuSectionItemsContainerView: UIView {
     
     enum State {
         case opening

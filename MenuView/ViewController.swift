@@ -66,6 +66,7 @@ class ViewController: UIViewController {
         menuView.backgroundColor = .white
         menuView.menuViewDataSource = self
         menuView.menuViewDelegate = self
+        menuView.reloadData()
         menuViewLeadingConstraint = menuView.leadingAnchor.constraint(
             equalTo: view.safeAreaLayoutGuide.leadingAnchor
         )
@@ -204,7 +205,8 @@ extension ViewController: MenuViewDataSource {
         let menuItem = menuSections[indexPath.section].menuItems[indexPath.item]
         let menuItemView = MenuItemView(
             title: menuItem.title,
-            iconImage: menuItem.iconImage
+            iconImage: menuItem.iconImage,
+            insets: menuItem.insets
         )
         return menuItemView
     }
@@ -228,8 +230,12 @@ extension ViewController: MenuViewDataSource {
         return headerView
     }
     
+    func menuView(_ menuView: MenuView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 52
+    }
+    
     func menuView(_ menuView: MenuView, heightForItemAt indexPath: IndexPath) -> CGFloat {
-        return 32
+        return 44
     }
 
 }

@@ -25,11 +25,6 @@ open class MenuView: UIScrollView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    open override func draw(_ rect: CGRect) {
-        super.draw(rect)
-        loadData()
-    }
-    
     open func reloadData() {
         menuItemsStackView.arrangedSubviews.forEach { arrangedSubview in
             menuItemsStackView.removeArrangedSubview(arrangedSubview)
@@ -79,14 +74,9 @@ open class MenuView: UIScrollView {
                 self,
                 heightForHeaderInSection: section
             )
-            let menuSectionHeaderInsets = menuViewDataSource.menuView(
-                self,
-                insetsForHeaderInSection: section
-            )
             menuSectionView.set(
                 headerView: menuSectionHeaderView,
-                height: menuSectionHeaderHeight,
-                insets: menuSectionHeaderInsets
+                height: menuSectionHeaderHeight
             )
             menuItemsStackView.addArrangedSubview(menuSectionView)
             let numberOfItems = menuViewDataSource.menuView(
@@ -113,14 +103,9 @@ open class MenuView: UIScrollView {
                     self,
                     heightForItemAt: menuItemViewIndexPath
                 )
-                let menuItemViewInsets = menuViewDataSource.menuView(
-                    self,
-                    insetsForItemAt: menuItemViewIndexPath
-                )
                 menuSectionView.append(
                     menuItemView: menuItemView,
-                    height: menuItemViewHeight,
-                    insets: menuItemViewInsets
+                    height: menuItemViewHeight
                 )
             }
         }

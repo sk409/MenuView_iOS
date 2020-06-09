@@ -12,7 +12,7 @@ public struct MenuSection {
         iconImage: UIImage? = nil,
         menuItems: [MenuItem] = [],
         collapsable: Bool = false,
-        insets: UIEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        insets: UIEdgeInsets = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
     ) {
         self.title = title
         self.iconImage = iconImage
